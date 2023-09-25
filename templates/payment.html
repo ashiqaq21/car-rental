@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% block content %}
+<style>
+    .container h1 {
+        text-align: center;
+        color: orangered;
+    }
+</style>
+
+<div class="container text-center">
+    <h1>Please Make Payment for Confirm Your Booking</h1>
+    <br><br>
+    <h3>Your Total Amount For {{days}} days is {{amount}}</h3> <br>
+    <button id="pay-btn" class="btn btn-lg btn-outline-info">Pay Your Amount</button>
+</div>
+
+<!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+
+        key: "{{ razorpay_merchant_key }}",
+        amount: "{{ razorpay_amount }}",
+        currency: "{{ currency }}",
+        name: "payment_integr",
+
+        order_id: "{{ razorpay_order_id }}",
+        callback_url: "{{ callback_url }}",
+    };
+    // initialise razorpay with the options.
+    var rzp1 = new Razorpay(options);
+    // add event listener to the payment button.
+    document.getElementById("pay-btn").onclick = function (e) {
+        rzp1.open();
+        e.preventDefault();
+    };
+</script>
+
+{% endblock %}
